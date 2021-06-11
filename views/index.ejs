@@ -13,7 +13,16 @@
 <body>
     <nav class="navbar navbar-dark navbar-expand-md sticky-top bg-dark navigation-clean-button">
         <div class="container"><a class="navbar-brand" href="#">HomeJam</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse d-xl-flex justify-content-xl-end" id="navcol-1"><span class="navbar-text actions"> <a class="login" href="/auth/google">Log In</a><a class="btn btn-light action-button" role="button" href="#">Sign Up</a></span></div>
+            <div class="collapse navbar-collapse d-xl-flex justify-content-xl-end" id="navcol-1">
+                <span class="navbar-text actions"> 
+                    <% if(!user){ %>
+                    <a class="login" href="/auth/google">Log In</a>
+                    <% } if(user) { %>
+                    <a class="login" href="/editProfile">Edit Profile</a>
+                    <a class="btn btn-light action-button" role="button" href="/logout">Log Out</a>
+                    <% } %>
+            </span>
+        </div>
         </div>
     </nav>
     <script src="assets/js/jquery.min.js"></script>
