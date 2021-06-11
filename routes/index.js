@@ -3,7 +3,6 @@ var router = express.Router();
 const passport = require('passport');
 const config = require('../bin/config/config.js');
 var url = require('url');
-const request = require('request');
 const User = require('../models/User');
 
 /* GET home page. */
@@ -68,11 +67,11 @@ router.post('/register', function(req, res, next) {
       } else {
         console.log(doc)
       }
-
   })
+  res.render('/')
 })
 
-//POST editProfile pager
+//POST editProfile page
 router.post('/editProfile', function(req, res, next) {
   User.findByIdAndUpdate(req.user.id, {
     name : req.body.name,
@@ -86,6 +85,17 @@ router.post('/editProfile', function(req, res, next) {
   })
   // next()
   res.render('editProfile', {user: req.user, updated: true})
+})
+
+//POST deleteProfile page
+router.post('/deleteProfile', function(req, res, next) {
+  User.findByIdAndRemove(req.user.id, function(err){
+    if(err){
+        // res.redirect("/campgrounds");
+    } else {
+        res.redirect("/");
+    }
+ });
 })
 
 module.exports = router;
