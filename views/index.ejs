@@ -18,6 +18,9 @@
                     <% if(!user){ %>
                     <a class="login" href="/auth/google">Log In</a>
                     <% } if(user) { %>
+                        <% if(user.userType == "teacher"){ %>
+                            <a class="login" href="/createClass">Create Class</a>
+                        <% } %>
                     <a class="login" href="/editProfile">Edit Profile</a>
                     <a class="btn btn-light action-button" role="button" href="/logout">Log Out</a>
                     <% } %>
