@@ -25,16 +25,54 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 })
 
+//GET updateClass 
+router.get('/updateClass', (req, res) => {
+  if(req.user.userType === "teacher"){
+    //fetch all data from DB
+    Class.findById(req.query.classID, function(err, classDetails) {
+      if(err) {
+        console.log(err)
+      } else {
+        console.log(classDetails)
+        User.find({userType: "student"}, function(err, students) {
+          if(err){
+            console.log(err)
+          } else {
+            //if no students enrolledId
+            if(classDetails.studentsEnrolled == null) {
+              const currentStudent = []
+              res.render('updateClass', {user: req.user, students: students, created: false, classDetails: classDetails, currentStudent: currentStudent});
+            } else {
+              //fetching current students
+            var currentStudent = [];
+            classDetails.studentsEnrolled.forEach(function(enrolledId) {
+              for(i = 0; i < students.length; i++){
+                if(enrolledId == students[i].id){
+                  currentStudent.push(students[i].name)
+                }
+              }
+            });
+            res.render('updateClass', {user: req.user, students: students, created: false, classDetails: classDetails, currentStudent: currentStudent});
+            }
+          }
+        })
+      }
+    });
+  } else {
+    res.render('index');
+  }
+})
+
 //GET studentDash
 router.get('/studentDash', (req, res) => {
   if(req.user.userType === "student") {
     //Fetch registered classes
-    Class.find({studentsEnrolled: req.user.id}, function(err, docs) {
+    Class.find({studentsEnrolled: req.user.id}, function(err, enrolledClasses) {
       if(err) {
         console.log(err)
       } else {
         console.log(docs)
-        res.render('studentDash', {user: req.user, enrolledClasses: docs});
+        res.render('studentDash', {user: req.user, enrolledClasses: enrolledClasses});
       }
     })
   }
@@ -148,7 +186,7 @@ router.post('/editProfile', function(req, res, next) {
 router.post('/deleteProfile', function(req, res, next) {
   User.findByIdAndRemove(req.user.id, function(err){
     if(err){
-        // res.redirect("/campgrounds");
+        console.log(err)
     } else {
         res.redirect("/");
     }
@@ -157,11 +195,6 @@ router.post('/deleteProfile', function(req, res, next) {
 
 //POST createClass page
 router.post('/createClass', function(req, res) {
-  console.log(req.body.nameOfClass);
-  console.log(req.body.date);
-  console.log(req.body.description);
-  console.log(req.body.student);
-
   new Class({
     nameOfClass: req.body.nameOfClass,
     date: req.body.date,
@@ -173,6 +206,35 @@ router.post('/createClass', function(req, res) {
     console.log("New class created : " + classCreated)
     res.redirect('/createClass')
 })
+})
+
+//POST updateClass page
+router.post('/updateClass',function(req, res) {
+  Class.findByIdAndUpdate(req.body.updateClassId, {
+    nameOfClass: req.body.nameOfClass,
+    date: req.body.date,
+    description: req.body.description,
+    studentsEnrolled: req.body.student
+  }, function(err, updatedResult) {
+    if(err) {
+      console.log(err);
+    } else {
+      console.log("updated" + updatedResult)
+      res.redirect("/")
+    }
+  })
+})
+
+//POST deleteClass page
+router.post('/deleteClass', function(req, res, next) {
+  console.log(req.body.deleteClassId)
+  Class.findByIdAndRemove(req.body.deleteClassId, function(err){
+    if(err){
+       console.log(err)
+    } else {
+        res.redirect("/");
+    }
+ });
 })
 
 module.exports = router;

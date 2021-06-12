@@ -19,7 +19,8 @@
             </div>
             <div class="row articles">
                 <% classes.forEach(function(clas) { %>
-                    <div class="col-sm-6 col-md-4 item"><a href="#"><img class="img-fluid" src="assets/img/desk.jpg"></a>
+                    <% var updateclass = "/updateClass?classID=" + clas.id %>
+                    <div class="col-sm-6 col-md-4 item"><a href= <%= updateclass %> ><img class="img-fluid" src="assets/img/desk.jpg"></a>
                         <h3 class="name"><%= clas.nameOfClass %></h3>
                         <p class="description"><%= clas.description %></p>
                         <i>Date : <%= clas.date %></i>
