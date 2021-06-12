@@ -8,12 +8,14 @@ const Class = require('../models/Class');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  if(req.user.userType === "teacher") {
-    res.redirect('/teacherDash');
-  } else if(req.user.userType === "student") {
-    res.redirect('/studentDash');
+  if(req.user){
+    if(req.user.userType === "teacher") {
+      res.redirect('/teacherDash');
+    } else if(req.user.userType === "student") {
+      res.redirect('/studentDash');
+    }
   } else {
-    res.render('index', {user: req.user});
+    res.render('index', {user: req.user})
   }
 });
 
