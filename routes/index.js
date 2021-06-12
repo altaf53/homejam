@@ -8,13 +8,34 @@ const Class = require('../models/Class');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', {user: req.user});
+  if(req.user.userType === "teacher") {
+    res.redirect('/teacherDash');
+  } else if(req.user.userType === "student") {
+    res.redirect('/studentDash');
+  } else {
+    res.render('index', {user: req.user});
+  }
 });
 
 //LOGOUT function
 router.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
+})
+
+//GET studentDash
+router.get('/studentDash', (req, res) => {
+  if(req.user.userType === "student") {
+    //Fetch registered classes
+    Class.find({studentsEnrolled: req.user.id}, function(err, docs) {
+      if(err) {
+        console.log(err)
+      } else {
+        console.log(docs)
+        res.render('studentDash', {user: req.user, enrolledClasses: docs});
+      }
+    })
+  }
 })
 
 //GET teacherDash 
@@ -144,7 +165,8 @@ router.post('/createClass', function(req, res) {
     date: req.body.date,
     description: req.body.description,
     studentsEnrolled: req.body.student,
-    teacherId: req.user.id
+    teacherId: req.user.id,
+    teacherName: req.user.name
   }).save().then((classCreated) => {
     console.log("New class created : " + classCreated)
     res.redirect('/createClass')

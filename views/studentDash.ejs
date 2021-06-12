@@ -18,21 +18,14 @@
                 <h2 class="text-center">Your Registered Classes</h2>
             </div>
             <div class="row articles">
-                <div class="col-sm-6 col-md-4 item"><a href="#"><img class="img-fluid" src="assets/img/desk.jpg"></a>
-                    <h3 class="name">Article Title</h3>
-                    <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent aliquam in tellus eu gravida. Aliquam varius finibus est, interdum justo suscipit id.</p><em>Professor Name</em>
-                    <p>DATE</p>
-                </div>
-                <div class="col-sm-6 col-md-4 item"><a href="#"></a><img class="img-fluid" src="assets/img/desk.jpg">
-                    <h3 class="name">Article Title</h3>
-                    <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent aliquam in tellus eu gravida. Aliquam varius finibus est, interdum justo suscipit id.</p><em>Professor Name</em>
-                    <p>DATE</p>
-                </div>
-                <div class="col-sm-6 col-md-4 item"><img class="img-fluid" src="assets/img/desk.jpg"><a href="#"></a>
-                    <h3 class="name">Article Title</h3>
-                    <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent aliquam in tellus eu gravida. Aliquam varius finibus est, interdum justo suscipit id.</p><em>Professor Name</em>
-                    <p>DATE</p>
-                </div>
+                <% enrolledClasses.forEach(function(clas) { %>
+                    <div class="col-sm-6 col-md-4 item"><a href="#"><img class="img-fluid" src="assets/img/desk.jpg"></a>
+                        <h3 class="name"><%= clas.nameOfClass %></h3>
+                        <p class="description"><%= clas.description %></p>
+                        <em> Professor <%= clas.teacherName %></em>
+                        <p>DATE <%= clas.date %></p>
+                    </div>
+                <% }) %>
             </div>
         </div>
     </div>

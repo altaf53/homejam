@@ -17,6 +17,9 @@ const userSchema = new Schema({
     },
     teacherId : {
         type : String
+    },
+    teacherName: {
+        type: String
     }
 })
 
