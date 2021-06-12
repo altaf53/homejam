@@ -71,7 +71,6 @@ router.get('/studentDash', (req, res) => {
       if(err) {
         console.log(err)
       } else {
-        console.log(docs)
         res.render('studentDash', {user: req.user, enrolledClasses: enrolledClasses});
       }
     })
@@ -83,12 +82,11 @@ router.get('/teacherDash', (req, res) => {
   if(req.user.userType === 'teacher') {
 
     //Fetch all classes
-    Class.find({teacherId: req.user.id}, function(err, docs) {
+    Class.find({teacherId: req.user.id}, function(err, allClass) {
       if(err) {
         console.log(err);
       } else {
-        console.log(docs)
-        res.render('teacherDash', {user: req.user, classes: docs});
+        res.render('teacherDash', {user: req.user, classes: allClass});
       }
     })
   }
@@ -159,11 +157,9 @@ router.post('/register', function(req, res, next) {
   }, function(err, doc) {
     if(err){
        console.log(err)
-      } else {
-        console.log(doc)
-      }
+      } 
+      res.redirect('/')
   })
-  res.redirect('/')
 })
 
 //POST editProfile page
@@ -174,11 +170,8 @@ router.post('/editProfile', function(req, res, next) {
   }, function(err, doc){
     if(err){
       console.log(err)
-    } else {
-      console.log(doc)
-    }
+    } 
   })
-  // next()
   res.render('editProfile', {user: req.user, updated: true})
 })
 
@@ -203,8 +196,7 @@ router.post('/createClass', function(req, res) {
     teacherId: req.user.id,
     teacherName: req.user.name
   }).save().then((classCreated) => {
-    console.log("New class created : " + classCreated)
-    res.redirect('/createClass')
+    res.redirect('/')
 })
 })
 
@@ -219,7 +211,6 @@ router.post('/updateClass',function(req, res) {
     if(err) {
       console.log(err);
     } else {
-      console.log("updated" + updatedResult)
       res.redirect("/")
     }
   })
