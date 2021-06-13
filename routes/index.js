@@ -172,7 +172,7 @@ router.post('/editProfile', function(req, res, next) {
       console.log(err)
     } 
   })
-  res.render('editProfile', {user: req.user, updated: true})
+  res.redirect('/editProfile')
 })
 
 //POST deleteProfile page
